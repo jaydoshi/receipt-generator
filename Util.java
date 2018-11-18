@@ -1,8 +1,13 @@
+package receipt;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Util {
 
-	public static ArrayList<String> exemptedItemList = new ArrayList<String>(); 
+	//public static ArrayList<String> exemptedItemList = new ArrayList<String>(); 
 	
 	// a fun ASCII title
 	public static void printTitle()
@@ -42,6 +47,27 @@ public class Util {
 		System.out.print('\n');
 	}
 	
+	// fill cart
+	public static void fillCartFromFile(String fileName, Cart userCart)
+	{
+		System.out.println("File chosen: "+fileName);
+		System.out.print('\n');
+		File file = new File(fileName).getAbsoluteFile();
+		try {
+
+	        Scanner iscan = new Scanner(file);
+	        while(iscan.hasNextLine()) 
+	        {
+	            String lineID = iscan.nextLine();
+	            Item hold = Util.parse(lineID);
+	            userCart.addItem(hold);
+	        }
+	        iscan.close();
+	    } 
+	    catch (FileNotFoundException e) {
+	        System.out.println("Error: User chosen file not found, your cart is empty");
+	    }
+	}
 	
 	public static Item parse(String line)
 	{
@@ -145,7 +171,7 @@ public class Util {
 		// check across a default or given list of exempted items
 		// books, food, medical supplies
 
-		ArrayList<String> temp = ReceiptGenerator.getIDList();
+		ArrayList<String> temp = Exemption.getIDList();
 		String searchName = itemName;
 		if(isImported == true)
 		{

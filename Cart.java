@@ -1,3 +1,5 @@
+package receipt;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Cart {
-    
     
 	double cartTotal;
 	double salesTaxesOfCart;

@@ -1,3 +1,5 @@
+package receipt;
+
 import java.text.DecimalFormat;
 
 public class Item {
@@ -71,6 +73,4 @@ public class Item {
 	{
 		this.amount = this.getAmount() - num;
 	}
-	
-	
 }

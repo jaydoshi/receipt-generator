@@ -1,3 +1,5 @@
+package receipt;
+
 import java.util.ArrayList;
 
 public class Search {
@@ -19,9 +21,8 @@ public class Search {
 			}
 			
 			return binarySearch(arrayID, mid+1, right, x); 
-
 		}
-		return false;
 		
+		return false;
 	}
 }
