@@ -1,13 +1,9 @@
 package receipt;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Util {
 
-	//public static ArrayList<String> exemptedItemList = new ArrayList<String>(); 
 	
 	// a fun ASCII title
 	public static void printTitle()
@@ -47,29 +43,7 @@ public class Util {
 		System.out.print('\n');
 	}
 	
-	// fill cart
-	public static void fillCartFromFile(String fileName, Cart userCart)
-	{
-		System.out.println("File chosen: "+fileName);
-		System.out.print('\n');
-		File file = new File(fileName).getAbsoluteFile();
-		try {
-
-	        Scanner iscan = new Scanner(file);
-	        while(iscan.hasNextLine()) 
-	        {
-	            String lineID = iscan.nextLine();
-	            Item hold = Util.parse(lineID);
-	            userCart.addItem(hold);
-	        }
-	        iscan.close();
-	    } 
-	    catch (FileNotFoundException e) {
-	        System.out.println("Error: User chosen file not found, your cart is empty");
-	    }
-	}
-	
-	public static Item parse(String line)
+	public static Item parse(String line) throws CustomException
 	{
 		int index = 0;
 		int amount = 0;
@@ -82,19 +56,56 @@ public class Util {
 		ArrayList<String> productHold = new ArrayList<String>();
 
 		// find amount of item
+		boolean amountFound = false;
+		String amountString = "";
+		int count = 0;
+		int endAmountIndex = 0;
+		while(amountFound == false)
+		{
+			char ch = line.charAt(count);
+			if(Character.isWhitespace(ch) == true)
+			{
+				if(amountString != "")
+				{
+					try {
+						
+						amount = Integer.parseInt(amountString);
+						
+					} catch(NumberFormatException nfe) {
+						System.out.println("Error: Could not parse into integer amount");
+						throw new CustomException("Error: Malformed amount, please try again");
+					}
+					
+					System.out.println("amount: "+amount);
+					endAmountIndex = count;
+					amountFound = true;
+				}
+			}
+			else
+			{
+				amountString += ch;
+			}
+			count++;
+		}
+		
+		/*
 		if(Character.isDigit(line.charAt(0)) == true)
 		{
 			char a = line.charAt(0);
 			amount = Character.getNumericValue(a);
 			System.out.println("amount: "+amount);
 		}
+		else
+		{
+			throw new CustomException("Error: Malformed amount, please try again");
+		}*/
 		
 		
 		String typeWord = "";
 		
 		// find all type words
 		// go through the entire product description
-		for(int i = 1; i < line.length(); i++)
+		for(int i = endAmountIndex; i < line.length(); i++)
 		{
 			char ch = line.charAt(i);
 			

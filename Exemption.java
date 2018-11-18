@@ -39,7 +39,7 @@ public class Exemption {
 	        fscan.close();
 	    } 
 	    catch (FileNotFoundException e) {
-	        e.printStackTrace();
+	        System.out.println("Error: Default file not found, the exemption list is empty");
 	    }
 	    
 	    // The list needs to be sorted in order for binary search to work

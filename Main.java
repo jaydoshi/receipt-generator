@@ -45,7 +45,7 @@ public class Main {
 		// if there is a file ready, parse that then proceed
 		if(inputChoice == 2)
 		{
-			// file
+			// file stream
 			if(categorizeChoice != 2)
 			{
 				scan.nextLine();
@@ -53,7 +53,7 @@ public class Main {
 			String cartFileFromUser = "";
 			System.out.print("What is the name of the file with items to add to cart? ");		
 			cartFileFromUser = scan.nextLine();
-			Util.fillCartFromFile(cartFileFromUser, userCart);
+			userCart.fillCartFromFile(cartFileFromUser);
 		}
 
 		
@@ -73,12 +73,24 @@ public class Main {
 			else if(userChoice == 1)
 			{
 				// add item
-				System.out.print("Type item amount, type, and price: ");
-				String itemToAdd = scan.nextLine();
-				itemToAdd = itemToAdd.trim();
-				System.out.println(itemToAdd);
-				Item inputItem = Util.parse(itemToAdd);
-				userCart.addItem(inputItem);
+				boolean successAdd = false;
+				while(successAdd == false)
+				{
+					System.out.print("Type item amount, type, and price: ");
+					String itemToAdd = scan.nextLine();
+					itemToAdd = itemToAdd.trim();
+					System.out.println(itemToAdd);
+					
+					try {
+						
+						Item inputItem = Util.parse(itemToAdd);
+						userCart.addItem(inputItem);
+						successAdd = true;
+						
+					} catch (CustomException ce) {
+						System.out.println(ce.getMessage());
+					}
+				}
 			}
 			else if(userChoice == 2)
 			{
@@ -91,12 +103,41 @@ public class Main {
 				{
 					userCart.removeItem(scan);
 				}
-				
 			}
 			else if(userChoice == 3)
 			{
 				// print receipt
-				userCart.saveReceiptToFile();
+				boolean validSave = false;
+				int saveChoice = 0;
+				while(validSave == false)
+				{
+					System.out.println("Where would you like to save the receipt to? ");
+					System.out.println("1) Default save file, receipt.txt");
+					System.out.println("2) Custom save file");
+					saveChoice = scan.nextInt();
+					
+					if(saveChoice == 1 || saveChoice == 2)
+					{
+						validSave = true;
+					}
+					else
+					{
+						System.out.println("That is not a valid option");
+					}
+				}
+				
+				if(saveChoice == 1)
+				{
+					userCart.saveReceiptToFile();
+				}
+				else if(saveChoice == 2)
+				{
+					scan.nextLine();
+					System.out.print("What is the name of the file to save to? ");		
+					String saveFileName = scan.nextLine();
+					userCart.saveReceiptToFile(saveFileName);
+				}
+				
 			}
 			else if(userChoice == 4)
 			{

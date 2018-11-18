@@ -2,6 +2,7 @@ package receipt;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -104,7 +105,36 @@ public class Cart {
 		}
 	}
 	
-	
+	// fill cart
+	public void fillCartFromFile(String fileName)
+	{
+		System.out.println("File chosen: "+fileName);
+		System.out.print('\n');
+		File file = new File(fileName).getAbsoluteFile();
+		try {
+
+	        Scanner iscan = new Scanner(file);
+	        int lineNumberOfFile = 1;
+	        while(iscan.hasNextLine()) 
+	        {
+	            String lineID = iscan.nextLine();
+	            
+	            try {
+	            	Item hold = Util.parse(lineID);
+	            	this.addItem(hold);
+	            } catch (CustomException ce) {
+					System.out.println(ce.getMessage());
+					System.out.println("Line "+lineNumberOfFile+" was skipped because it was malformed");
+	            }
+	            
+	            lineNumberOfFile++;
+	        }
+	        iscan.close();
+	    } 
+	    catch (FileNotFoundException e) {
+	        System.out.println("Error: User chosen file not found, your cart is empty");
+	    }
+	}
 	
 	// gets cart size, the number of different things NOT total amount (see below for that method)
 	public int getSize()
@@ -227,12 +257,33 @@ public class Cart {
 		} catch (IOException e) {
 			System.out.println("Error: Could not locate default file");
 		}
+	    
 		System.out.println("Finished saving receipt");
 	}
 
 	
 	public void saveReceiptToFile(String saveFileName)
 	{
-		
+		File file = new File(saveFileName).getAbsoluteFile();
+	    try {
+	    	
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			
+			// last summation before saving
+			this.sumCartTotal();
+			for(int i = 0; i < this.shoppingCart.size(); i++)
+			{
+				writer.write(this.shoppingCart.get(i).toString()+'\n');
+			}
+		    DecimalFormat decim = new DecimalFormat("0.00");
+
+			writer.write("Sales Taxes: "+decim.format(this.salesTaxesOfCart)+'\n');
+			writer.write("Total: "+decim.format(this.cartTotal));
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("Error: Could not locate user receipt file");
+		}
+	    
+		System.out.println("Finished saving receipt");
 	}
 }
