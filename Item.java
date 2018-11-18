@@ -29,14 +29,16 @@ public class Item {
 			this.taxRateOfItem += 0.05;
 		}
 		
-		this.taxedPrice = (originalPrice * taxRateOfItem) + originalPrice;
+		double num = this.originalPrice * this.taxRateOfItem;
+		num = Math.ceil(num * 20) / 20;
+		this.taxedPrice = num + originalPrice;
 	}
 	
 	@Override
 	public String toString() 
 	{
 	    DecimalFormat decim = new DecimalFormat("0.00");
-		String hold = this.amount+" "+this.itemName+" at "+decim.format(this.originalPrice);
+		String hold = this.amount+" "+this.itemName+": "+decim.format(this.taxedPrice);
 		return hold;
 	}
 	
@@ -53,6 +55,21 @@ public class Item {
 	public int getAmount()
 	{
 		return amount;
+	}
+	
+	public String getFullProductName()
+	{
+		return itemName;
+	}
+	
+	public void increaseAmount(int num)
+	{
+		this.amount = this.getAmount() + num;
+	}
+	
+	public void decreaseAmount(int num)
+	{
+		this.amount = this.getAmount() - num;
 	}
 	
 	

@@ -4,7 +4,17 @@ public class Util {
 
 	public static ArrayList<String> exemptedItemList = new ArrayList<String>(); 
 	
+	// a fun ASCII title
+	public static void printTitle()
+	{
+		System.out.println("   ___              _      __    _____                      __          \n" + 
+				"  / _ \\___ _______ (_)__  / /_  / ___/__ ___  ___ _______ _/ /____  ____\n" + 
+				" / , _/ -_) __/ -_) / _ \\/ __/ / (_ / -_) _ \\/ -_) __/ _ `/ __/ _ \\/ __/\n" + 
+				"/_/|_|\\__/\\__/\\__/_/ .__/\\__/  \\___/\\__/_//_/\\__/_/  \\_,_/\\__/\\___/_/   \n" + 
+				"                  /_/                                                   ");
+	}
 	
+	// opening options for streaming
 	public static void printInputOptions()
 	{
 		System.out.println("Welcome to Receipt Generator!"+'\n'+"How would you like to stream your input?");
@@ -12,6 +22,7 @@ public class Util {
 		System.out.println("2) From file");
 	}
 	
+	// choose exemption file source
 	public static void printCategorizationFileOptions()
 	{
 		System.out.println("How would you like to provide the exempted item list?");
@@ -19,6 +30,7 @@ public class Util {
 		System.out.println("2) Provide text file");
 	}
 	
+	// main menu options
 	public static void printOptions()
 	{
 		System.out.print('\n');
@@ -86,6 +98,7 @@ public class Util {
 		}
 		
 		// full product name
+		
 		String itemName = productHold.get(0);
 		for(int i = 1; i < productHold.size(); i++)
 		{
@@ -93,6 +106,7 @@ public class Util {
 		}
 		itemName.trim();
 		System.out.println("Full product name: "+itemName);
+		
 		// ---
 		
 		
@@ -132,7 +146,15 @@ public class Util {
 		// books, food, medical supplies
 
 		ArrayList<String> temp = ReceiptGenerator.getIDList();
-		isExempted = Search.binarySearch(temp, 0, temp.size(), itemName); 
+		String searchName = itemName;
+		if(isImported == true)
+		{
+			searchName = searchName.replace("imported", "");
+			searchName = searchName.trim();
+		}
+		System.out.println("search :"+searchName);
+		isExempted = Search.binarySearch(temp, 0, temp.size(), searchName); 
+		
 		if(isExempted == true)
 		{
 			System.out.println("this is exempted");

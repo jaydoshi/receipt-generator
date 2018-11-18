@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Vector;
 
 //-------------
 // Jay Doshi
@@ -13,6 +12,7 @@ public class ReceiptGenerator {
 	
 	public static ArrayList<String> identificationList = new ArrayList<String>(); 
 	public static Cart userCart = new Cart();
+	
 
 	public static void main(String[] args) {
 		
@@ -21,6 +21,7 @@ public class ReceiptGenerator {
 		Scanner scan = new Scanner(System.in);
 		
 		// input stream choice
+		Util.printTitle();
 		Util.printInputOptions();
 		int inputChoice = scan.nextInt();
 		
@@ -56,6 +57,7 @@ public class ReceiptGenerator {
 			cartFileFromUser = scan.nextLine();
 			fillCartFromFile(cartFileFromUser);
 		}
+
 		
 		// console stream
 		int userChoice = 0;
@@ -83,11 +85,20 @@ public class ReceiptGenerator {
 			else if(userChoice == 2)
 			{
 				// remove item
-				userCart.removeItem();
+				if(userCart.getSize() == 0)
+				{
+					System.out.println("No items to remove");
+				}
+				else
+				{
+					userCart.removeItem(scan);
+				}
+				
 			}
 			else if(userChoice == 3)
 			{
-					
+				// print receipt
+				userCart.saveReceiptToFile();
 			}
 			else if(userChoice == 4)
 			{
