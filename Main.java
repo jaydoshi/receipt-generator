@@ -20,11 +20,41 @@ public class Main {
 		
 		// input stream choice
 		Util.printTitle();
-		Util.printInputOptions();
-		int inputChoice = scan.nextInt();
 		
-		Util.printCategorizationFileOptions();
-		int categorizeChoice = scan.nextInt();
+		int inputChoice = 0;
+		boolean validInputChoice = false;
+		while(validInputChoice == false)
+		{
+			Util.printInputOptions();
+			inputChoice = scan.nextInt();
+
+			if(inputChoice != 1 && inputChoice != 2)
+			{
+				System.out.println("Not a valid input choice");
+			}
+			else
+			{
+				validInputChoice = true;
+			}
+		}
+		
+		
+		int categorizeChoice = 0;
+		boolean validExemptionChoice = false;
+		while(validExemptionChoice == false)
+		{
+			Util.printCategorizationFileOptions();
+			categorizeChoice = scan.nextInt();
+			
+			if(categorizeChoice != 1 && categorizeChoice != 2)
+			{
+				System.out.println("Not a valid exemption file choice");
+			}
+			else
+			{
+				validExemptionChoice = true;
+			}
+		}
 		
 		// list set up
 		if(categorizeChoice == 1)
@@ -43,7 +73,7 @@ public class Main {
 		}
 		
 		// if there is a file ready, parse that then proceed
-		if(inputChoice == 2)
+		if(inputChoice == 1)
 		{
 			// file stream
 			if(categorizeChoice != 2)

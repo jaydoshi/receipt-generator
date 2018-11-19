@@ -44,6 +44,18 @@ public class Item {
 		return hold;
 	}
 	
+	public void isThisItemExempted()
+	{
+		if(this.isExempted == true)
+		{
+			System.out.println(itemName+" is exempted");
+		}
+		else
+		{
+			System.out.println(itemName+" is not exempted");
+		}
+	}
+	
 	public double getOriginalPrice()
 	{
 		return originalPrice;

@@ -7,22 +7,43 @@ biscuit
 bread
 broth
 burger
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEEr
+
 butter
 cake
 candy
-caramel
+            caramel
 caviar
 cheese
 chili
 chocolate
-cider
+               cider
 cobbler
 cocoa
 coffee
 cookie
-cream
-croissant
-crumble
+          cream
+	croissant
+	crumble
 cuisine
 curd
 dessert
@@ -92,10 +113,14 @@ vinegar
 waffle
 water
 wheat
-wine
+WINE
 wok
 yeast
 yogurt
+packet of headache pills
+box of chocolates
+chocolate bar
+book
 packet of headache pills
 box of chocolates
 chocolate bar

@@ -2,22 +2,21 @@ package receipt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Exemption {
 
-	public static ArrayList<String> identificationList = new ArrayList<String>();
+	public static HashSet<String> exemptionSet = new HashSet<String>();
 	
 	public Exemption()
 	{
 		
 	}
 	
-	// getter for id list
-	public static ArrayList<String> getIDList()
+	public static HashSet<String> getExemptionSet()
 	{
-		return identificationList; 
+		return exemptionSet;
 	}
 	
 	// default exemption config 
@@ -34,7 +33,12 @@ public class Exemption {
 	        while(fscan.hasNextLine()) 
 	        {
 	            String lineID = fscan.nextLine();
-	            identificationList.add(lineID);
+	            if(lineID != null && !lineID.isEmpty())
+	            {
+		            lineID = lineID.trim();
+		            lineID = lineID.toLowerCase();
+		            exemptionSet.add(lineID);
+	            }
 	        }
 	        fscan.close();
 	    } 
@@ -42,12 +46,11 @@ public class Exemption {
 	        System.out.println("Error: Default file not found, the exemption list is empty");
 	    }
 	    
-	    // The list needs to be sorted in order for binary search to work
-	    identificationList.sort(null);
-	    for(int i = 0; i < identificationList.size(); i++)
-		{
-			System.out.println(identificationList.get(i));
-		}
+	    System.out.println("SET------");
+	    for(String e : exemptionSet)
+	    {
+			System.out.println(e);
+	    }
 	}	
 	
 	// custom exemption
@@ -62,7 +65,12 @@ public class Exemption {
 	        while(fscan.hasNextLine()) 
 	        {
 	            String lineID = fscan.nextLine();
-	            identificationList.add(lineID);
+	            if(lineID != null && !lineID.isEmpty())
+	            {
+		            lineID = lineID.trim();
+		            lineID = lineID.toLowerCase();
+		            exemptionSet.add(lineID);
+	            }
 	        }
 	        fscan.close();
 	    } 
@@ -70,12 +78,11 @@ public class Exemption {
 	        System.out.println("Error: User chosen file not found, using default exemptions");
 	        exemptionConfig();
 	    }
-		
-		// The list needs to be sorted in order for binary search to work
-	    identificationList.sort(null);
-	    for(int i = 0; i < identificationList.size(); i++)
-		{
-			System.out.println(identificationList.get(i));
-		}
+	    
+	    System.out.println("SET------");
+	    for(String e : exemptionSet)
+	    {
+			System.out.println(e);
+	    }
 	}
 }

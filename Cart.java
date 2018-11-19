@@ -136,7 +136,7 @@ public class Cart {
 	    }
 	}
 	
-	// gets cart size, the number of different things NOT total amount (see below for that method)
+	// gets cart size, aka the number of different things NOT total amount (see below for that method)
 	public int getSize()
 	{
 		return this.shoppingCart.size();
