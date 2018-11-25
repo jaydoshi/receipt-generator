@@ -45,12 +45,6 @@ public class Exemption {
 	    catch (FileNotFoundException e) {
 	        System.out.println("Error: Default file not found, the exemption list is empty");
 	    }
-	    
-	    System.out.println("SET------");
-	    for(String e : exemptionSet)
-	    {
-			System.out.println(e);
-	    }
 	}	
 	
 	// custom exemption
@@ -77,12 +71,6 @@ public class Exemption {
 	    catch (FileNotFoundException e) {
 	        System.out.println("Error: User chosen file not found, using default exemptions");
 	        exemptionConfig();
-	    }
-	    
-	    System.out.println("SET------");
-	    for(String e : exemptionSet)
-	    {
-			System.out.println(e);
 	    }
 	}
 }

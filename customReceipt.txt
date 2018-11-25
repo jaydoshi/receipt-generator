@@ -1,0 +1,4 @@
+1 gauze: 8.00
+1 imported gauze: 10.49
+Sales Taxes: 0.50
+Total: 18.49

@@ -44,6 +44,7 @@ public class Item {
 		return hold;
 	}
 	
+	// tester
 	public void isThisItemExempted()
 	{
 		if(this.isExempted == true)

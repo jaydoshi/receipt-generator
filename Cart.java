@@ -21,6 +21,28 @@ public class Cart {
 		this.salesTaxesOfCart = 0.0;
 	}
 	
+	// manages from main
+	public void addChoice(Scanner scan1)
+	{
+		boolean successAdd = false;
+		while(successAdd == false)
+		{
+			System.out.print("Type item amount, type, and price: ");
+			String itemToAdd = scan1.nextLine();
+			itemToAdd = itemToAdd.trim();
+			
+			try {
+				
+				Item inputItem = Util.parse(itemToAdd);
+				this.addItem(inputItem);
+				successAdd = true;
+				System.out.println("Successfully added item to cart");
+				
+			} catch (CustomException ce) {
+				System.out.println(ce.getMessage());
+			}
+		}
+	}
 	
 	// adds a new item to the shopping cart
 	public void addItem(Item parseItem)
@@ -49,8 +71,6 @@ public class Cart {
 			shoppingCart.add(parseItem);
 		}
 	}
-	
-	
 	
 	// remove an item from the shopping cart
 	public void removeItem(Scanner rscan)
@@ -105,6 +125,39 @@ public class Cart {
 		}
 	}
 	
+	// clear the whole cart
+	public void removeAllItems(Scanner rscan)
+	{
+		boolean isChosen = false;
+		int rChoice = 0;
+		while(isChosen == false)
+		{
+			// double check
+			System.out.println("Are you sure you want to clear your cart?");
+			System.out.println("1) Yes");
+			System.out.println("2) No");
+			rChoice = rscan.nextInt();
+			if(rChoice != 1 && rChoice != 2)
+			{
+				System.out.println("Error: Invalid choice, please choose again");
+			}
+			else
+			{
+				isChosen = true;
+			}
+		}
+		
+		if(rChoice == 1)
+		{
+			shoppingCart.clear();
+			System.out.println("Your cart is now empty");
+		}
+		else
+		{
+			System.out.println("Your cart is unchanged");
+		}
+	}
+	
 	// fill cart
 	public void fillCartFromFile(String fileName)
 	{
@@ -143,7 +196,6 @@ public class Cart {
 	}
 	
 	
-	
 	// gets total number of items in the cart
 	public int getTotalNumberOfItems()
 	{
@@ -155,13 +207,42 @@ public class Cart {
 		return count;
 	}
 	
+	// display some miscellaneous stats about the cart
+	public void displayShoppingCartStats()
+	{
+        System.out.println("Your cart:");
+        if(this.getSize() == 0)
+        {
+        	System.out.println("You have no items");
+        	return;
+        }
+        
+        if(this.getSize() == 1)
+        {
+            System.out.println("You have 1 unique item");
+        }
+        else if(this.getSize() > 1)
+        {
+            System.out.println("You have "+this.getSize()+" unique items");
+        }
+        
+        int count = this.getTotalNumberOfItems();
+        
+        if(count == 1)
+        {
+            System.out.println("You have 1 total item");
+        }
+        else
+        {
+            System.out.println("You have "+this.getTotalNumberOfItems()+" total items");
+        }
+	}
 	
 	// gets cart total cost
 	public double getCartTotal()
 	{
 		return this.cartTotal;
 	}
-
 	
 	
 	// gets sales tax only of cart
@@ -169,7 +250,6 @@ public class Cart {
 	{
 		return this.salesTaxesOfCart;
 	}
-	
 	
 	
 	// sums the total prices of all items in the cart
@@ -187,15 +267,13 @@ public class Cart {
 			double hold = (double)multiplier * this.shoppingCart.get(i).getTaxedPrice();
 			totalWithoutTax += (double)multiplier * this.shoppingCart.get(i).getOriginalPrice();
 			double costOfItem = Math.round(hold*100.0)/100.0;
-			//System.out.println("cost "+costOfItem);
 			totalHold += costOfItem;
 		}
 
 		this.cartTotal = Math.round(totalHold*100.0)/100.0;
 		this.salesTaxesOfCart = Math.round((this.cartTotal - totalWithoutTax)*100.0)/100.0;
 	}
-	
-	
+
 	
 	// display the current items in the shopping cart, sales tax, and total
 	public void displayShoppingCart()
@@ -211,7 +289,6 @@ public class Cart {
 		System.out.println("Sales Taxes "+decim.format(this.salesTaxesOfCart));
 		System.out.println("Total "+decim.format(this.cartTotal));
 	}
-	
 	
 	
 	// display the current items in the shopping cart, sales tax, and total
@@ -231,8 +308,42 @@ public class Cart {
 		System.out.print('\n');
 	}
 	
+	// manages from main for saving
+	public void saveChoice(Scanner scan1)
+	{
+		boolean validSave = false;
+		int saveChoice = 0;
+		while(validSave == false)
+		{
+			System.out.println("Where would you like to save the receipt to? ");
+			System.out.println("1) Default save file, receipt.txt");
+			System.out.println("2) Custom save file");
+			saveChoice = scan1.nextInt();
+			
+			if(saveChoice == 1 || saveChoice == 2)
+			{
+				validSave = true;
+			}
+			else
+			{
+				System.out.println("That is not a valid option");
+			}
+		}
+		
+		if(saveChoice == 1)
+		{
+			this.saveReceiptToFile();
+		}
+		else if(saveChoice == 2)
+		{
+			scan1.nextLine();
+			System.out.print("What is the name of the file to save to? ");		
+			String saveFileName = scan1.nextLine();
+			this.saveReceiptToFile(saveFileName);
+		}
+	}
 	
-	
+	// default save
 	public void saveReceiptToFile()
 	{
 		System.out.println("Saving to default file, receipt.txt");
@@ -262,8 +373,10 @@ public class Cart {
 	}
 
 	
+	// overload to save at a custom file
 	public void saveReceiptToFile(String saveFileName)
 	{
+		System.out.println("Saving to custom file, "+saveFileName);
 		File file = new File(saveFileName).getAbsoluteFile();
 	    try {
 	    	

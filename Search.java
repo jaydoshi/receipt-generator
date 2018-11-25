@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class Search {
 	
+	// slightly adjusted version of standard implementation of binary search
+	// previously used to check exemptions
+	// now updated to set
+	// see documentation on Updates
 	public static boolean binarySearch(ArrayList<String> arrayID, int left, int right, String x) 
 	{
 		if(right >= left)

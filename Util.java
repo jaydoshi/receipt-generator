@@ -39,10 +39,19 @@ public class Util {
 		System.out.print('\n');
 		System.out.println("1) Add item");
 		System.out.println("2) Remove item");
-		System.out.println("3) Print receipt");
-		System.out.println("4) Display shopping cart");
-		System.out.println("5) Quit and print receipt");
+		System.out.println("3) Clear cart");
+		System.out.println("4) Print receipt");
+		System.out.println("5) Display shopping cart");
+		System.out.println("6) Display shopping cart stats");
+		System.out.println("7) Quit and print receipt");
 		System.out.print('\n');
+	}
+	
+	public static void printExitOptions()
+	{
+		System.out.println("Before exiting, would you like to save your receipt?");
+		System.out.println("1) Yes");
+		System.out.println("2) No");
 	}
 	
 	public static Item parse(String line) throws CustomException
@@ -54,10 +63,12 @@ public class Util {
 		boolean isExempted = false;
 		
 		line = line.toLowerCase();
-		ArrayList<String> itemType = new ArrayList<String>();
-		ArrayList<String> productHold = new ArrayList<String>();
+		
+		ArrayList<String> itemType = new ArrayList<String>(); // to find key types
+		ArrayList<String> productHold = new ArrayList<String>(); // for product name
 
 		// find amount of item
+		
 		boolean amountFound = false;
 		String amountString = "";
 		int count = 0;
@@ -84,7 +95,6 @@ public class Util {
 						throw new CustomException("Error: Malformed amount, please try again");
 					}
 					
-					System.out.println("amount: "+amount);
 					endAmountIndex = count;
 					amountFound = true;
 				}
@@ -96,23 +106,12 @@ public class Util {
 			count++;
 		}
 		
-		/*
-		if(Character.isDigit(line.charAt(0)) == true)
-		{
-			char a = line.charAt(0);
-			amount = Character.getNumericValue(a);
-			System.out.println("amount: "+amount);
-		}
-		else
-		{
-			throw new CustomException("Error: Malformed amount, please try again");
-		}*/
-		
 		
 		String typeWord = "";
 		
 		// find all type words
 		// go through the entire product description
+		
 		boolean foundAtDivider = false;
 		for(int i = endAmountIndex; i < line.length(); i++)
 		{
@@ -132,7 +131,6 @@ public class Util {
 					}
 					
 					typeWord.trim();
-					System.out.println("new type: "+typeWord);
 					productHold.add(typeWord);
 					itemType.add(typeWord);
 					typeWord = "";
@@ -149,21 +147,25 @@ public class Util {
 			throw new CustomException("Error: \"at\" was not found, please include \"at\" ");
 		}
 		
-		// full product name
+		// full product name is itemName (including "imported")
 		
-		String itemName = productHold.get(0);
+		if(productHold.isEmpty())
+		{
+			throw new CustomException("Error: No product name was given");
+		}
+		
+		String itemName = productHold.get(0); // exception earlier prevents this being null
 		for(int i = 1; i < productHold.size(); i++)
 		{
 			itemName += " " + productHold.get(i);
 		}
 		itemName.trim();
-		System.out.println("Full product name: "+itemName);
 		
 		// ---
 		
 		
 		// price
-		
+
 		String priceCollection = "";
 		for(int i = index; i < line.length(); i++)
 		{
@@ -180,9 +182,7 @@ public class Util {
 			System.out.println("Error: Could not parse into double price");
 			throw new CustomException("Error: Malformed price, please try again");
 		}
-		
-		System.out.println("cost per unit: $"+originalPrice);
-		
+				
 		// ---
 		
 		
@@ -195,7 +195,6 @@ public class Util {
 			if(hold.equals("imported"))
 			{
 				isImported = true;
-				System.out.println("this is imported");
 			}
 		}
 		
@@ -203,30 +202,24 @@ public class Util {
 		
 		
 		// Quick O(1) lookup on the HashSet to see if the product is exempted
+		// cut out the key words before searching set (the exemption set doesn't need to be twice
+		// as big just to have the prefix imported- in front of everything)
 		
 		HashSet<String> exemptionTemp = Exemption.getExemptionSet();
 		String searchName = itemName;
 		
-		// cut out the key words
 		if(isImported == true)
 		{
 			searchName = searchName.replace("imported", "");
 			searchName = searchName.trim();
 		}
-		System.out.println("search :"+searchName);
 		
 		if(exemptionTemp.contains(searchName))
 		{
 			isExempted = true;
 		}
 		
-		if(isExempted == true)
-		{
-			System.out.println("this is exempted");
-		}
-		
 		//---
-		
 		
 		// build and return
 		
